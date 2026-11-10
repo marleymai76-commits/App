@@ -1,0 +1,20 @@
+{
+  "config": {
+    "total": 10,
+    "sorteados": 0,
+    "inicio": "2027-07-01",
+    "ultimoSorteio": null,
+    "proximoSorteio": 1814400000000,
+    "ativo": true
+  },
+  "participants": [
+    {
+      "id": "user_test_123",
+      "uid": "user_test_123",
+      "email": "test@sistenfox.pt",
+      "plano": "Pocket Pro",
+      "joinedAt": 1794152341100
+    }
+  ],
+  "winners": []
+}

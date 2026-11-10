@@ -1,0 +1,243 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+@theme {
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+
+  --color-gold: #FFD700;
+  --color-gold-dark: #B8860B;
+  
+  --color-accent: var(--accent-color);
+  --color-accent-dark: var(--accent-color-dark);
+  
+  --color-premium-black: #0A0A0A;
+  --color-premium-gray: #1A1A1A;
+
+  --color-app: var(--bg-app);
+  --color-text-app: var(--text-app);
+  --color-card-app: var(--card-app);
+  --color-border-app: var(--border-app);
+}
+
+@layer base {
+  :root {
+    --bg-app: #000000;
+    --text-app: #E8FFF7;
+    --card-app: #1A1A1A;
+    --border-app: rgba(255, 255, 255, 0.1);
+    
+    /* Sistenfox New Visual (Cyan/Zinc) */
+    --accent-color: #22d3ee; /* cyan-400 */
+    --accent-color-dark: #083344;
+    --primary-color: #22d3ee;
+    --secondary-color: #0D1F1A;
+  }
+
+  [data-accent="verde_tech"] {
+    --accent-color: #00C896;
+    --accent-color-dark: #12352D;
+    --primary-color: #00C896;
+    --secondary-color: #0D1F1A;
+  }
+  [data-accent="sistenfox"] { 
+    --accent-color: #FFD700; 
+    --accent-color-dark: #B8860B;
+    --primary-color: #FFD700;
+    --secondary-color: #1A1A1A;
+  }
+  [data-accent="vermelho_gourmet"] { 
+    --accent-color: #EF4444; 
+    --accent-color-dark: #991B1B;
+    --primary-color: #EF4444;
+    --secondary-color: #450a0a;
+  }
+  [data-accent="azul_premium"] { 
+    --accent-color: #3B82F6; 
+    --accent-color-dark: #1E40AF;
+    --primary-color: #3B82F6;
+    --secondary-color: #1e3a8a;
+  }
+  [data-accent="verde_organico"] { 
+    --accent-color: #10B981; 
+    --accent-color-dark: #065F46;
+    --primary-color: #10B981;
+    --secondary-color: #064e3b;
+  }
+  [data-accent="bronze_rustico"] { 
+    --accent-color: #CD7F32; 
+    --accent-color-dark: #8B4513;
+    --primary-color: #CD7F32;
+    --secondary-color: #451a03;
+  }
+  [data-accent="prata_minimalista"] { 
+    --accent-color: #C0C0C0; 
+    --accent-color-dark: #708090;
+    --primary-color: #C0C0C0;
+    --secondary-color: #334155;
+  }
+
+  .dark {
+    --bg-app: #0A0A0A;
+    --text-app: #FFFFFF;
+    --card-app: #141414;
+    --border-app: rgba(255, 215, 0, 0.2);
+  }
+  
+  .dark[data-accent="sistenfox"] { --border-app: rgba(255, 215, 0, 0.2); }
+  .dark[data-accent="vermelho_gourmet"] { --border-app: rgba(239, 68, 68, 0.2); }
+  .dark[data-accent="azul_premium"] { --border-app: rgba(59, 130, 246, 0.2); }
+  .dark[data-accent="verde_organico"] { --border-app: rgba(16, 185, 129, 0.2); }
+  .dark[data-accent="bronze_rustico"] { --border-app: rgba(205, 127, 50, 0.2); }
+  .dark[data-accent="prata_minimalista"] { --border-app: rgba(192, 192, 192, 0.2); }
+  .dark[data-accent="silver"] { --border-app: rgba(192, 192, 192, 0.2); }
+
+  .light {
+    --bg-app: #F8FAFC;
+    --text-app: #0F172A;
+    --card-app: #FFFFFF;
+    --border-app: #E2E8F0;
+  }
+
+  .light[data-accent="sistenfox"] { 
+    --border-app: #E2E8F0; 
+    --secondary-color: #F8FAFC;
+    --primary-color: #0F172A;
+    --accent-color: #0F172A;
+  }
+  .light[data-accent="vermelho_gourmet"] { 
+    --border-app: #FEE2E2; 
+    --secondary-color: #FEF2F2;
+  }
+  .light[data-accent="azul_premium"] { 
+    --border-app: #DBEAFE; 
+    --secondary-color: #EFF6FF;
+  }
+  .light[data-accent="verde_organico"] { 
+    --border-app: #D1FAE5; 
+    --secondary-color: #ECFDF5;
+  }
+  .light[data-accent="bronze_rustico"] { 
+    --border-app: #FEF3C7; 
+    --secondary-color: #FFFBEB;
+  }
+  .light[data-accent="prata_minimalista"] { 
+    --border-app: #E2E8F0; 
+    --secondary-color: #F1F5F9;
+  }
+  .light[data-accent="verde_tech"] { 
+    --border-app: #DCFCE7; 
+    --secondary-color: #F0FDF4;
+  }
+
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-app);
+    @apply font-sans antialiased transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  /* Accessibility & High Contrast overrides in Light Mode */
+  .light .gold-text-gradient {
+    background-image: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    color: #0F172A !important;
+  }
+
+  .light .text-gold {
+    color: #0F172A !important;
+  }
+
+  .light .bg-gold\/5 {
+    background-color: #F1F5F9 !important;
+  }
+
+  .light .bg-gold\/10 {
+    background-color: #E2E8F0 !important;
+    color: #0F172A !important;
+  }
+
+  .light .border-gold\/10,
+  .light .border-gold\/20,
+  .light .border-gold\/30 {
+    border-color: #CBD5E1 !important;
+  }
+
+  .light input,
+  .light select,
+  .light textarea {
+    color: #0F172A;
+    border-color: #CBD5E1;
+  }
+
+  .light input::placeholder,
+  .light textarea::placeholder {
+    color: #64748B;
+  }
+}
+
+@layer utilities {
+  .gold-gradient {
+    background: linear-gradient(135deg, #22d3ee 0%, #083344 100%);
+  }
+
+  .gold-text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #22d3ee 0%, #a5f3fc 50%, #083344 100%);
+  }
+
+  .premium-border {
+    border: 1px solid var(--border-app);
+  }
+
+  .premium-card {
+    background-color: var(--card-app);
+    @apply rounded-3xl p-6 transition-all duration-300;
+    border: 1px solid var(--border-app);
+    box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.25);
+  }
+
+  .light .premium-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  }
+
+  .light .premium-card:hover {
+    border-color: #CBD5E1;
+    box-shadow: 0 10px 20px -3px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.06);
+  }
+
+  /* Mobile UI Refinements */
+  .mobile-safe-padding {
+    @apply px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10;
+  }
+
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+
+  .mobile-text-balance {
+    text-wrap: balance;
+  }
+
+  .premium-shadow {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+  }
+
+  .light .premium-shadow {
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.06);
+  }
+
+  .gold-shadow {
+    box-shadow: 0 4px 20px -5px rgba(255, 215, 0, 0.2);
+  }
+
+  .light .gold-shadow {
+    box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.08);
+  }
+}

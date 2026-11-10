@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <script>
+      // Protect fetch from being overwritten
+      (function() {
+        function protect(obj, prop) {
+          try {
+            const descriptor = Object.getOwnPropertyDescriptor(obj, prop);
+            if (descriptor) {
+              if (descriptor.get && !descriptor.set) {
+                Object.defineProperty(obj, prop, {
+                  get: function() { return descriptor.get.call(this); },
+                  set: function(v) { console.warn('Attempted to overwrite ' + prop + ', ignored.'); },
+                  configurable: true,
+                  enumerable: true
+                });
+                return true;
+              }
+              if (!descriptor.writable && descriptor.configurable) {
+                Object.defineProperty(obj, prop, {
+                  value: descriptor.value,
+                  writable: true,
+                  configurable: true,
+                  enumerable: true
+                });
+                return true;
+              }
+            }
+          } catch (e) {}
+          return false;
+        }
+        
+        try {
+          const originalFetch = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() { return originalFetch; },
+            set: function(v) { console.warn('Attempted to overwrite fetch on window, ignored.'); },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          protect(Window.prototype, 'fetch');
+        }
+      })();
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SISTENFOX | Gestão Premium para seu Negócio</title>
+    <meta name="description" content="SISTENFOX - A plataforma definitiva de gestão premium para restaurantes, salões, studios e muito mais. Sofisticação e eficiência em um só lugar." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sistenfox.pt/" />
+    <meta property="og:title" content="SISTENFOX | Gestão Premium" />
+    <meta property="og:description" content="A plataforma definitiva de gestão premium para seu negócio." />
+    <meta property="og:image" content="https://i.imgur.com/your-logo-here.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="SISTENFOX | Gestão Premium" />
+    <meta property="twitter:description" content="A plataforma definitiva de gestão premium para seu negócio." />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="SISTENFOX" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#ffb300" />
+
+    <!-- Favicon raposa -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>" />
+  </head>
+
+  <body>
+
+    <!-- 🦊 ÍCONE DA RAPOSA NO TOPO -->
+    <div style="display:flex; justify-content:center; margin-top:20px; font-size:42px;">
+      🦊
+    </div>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/service-worker.js")
+            .then((reg) => {
+              console.log("[PWA] Service Worker registrado para uso offline:", reg.scope);
+              reg.onupdatefound = () => {
+                const installingWorker = reg.installing;
+                if (installingWorker) {
+                  installingWorker.onstatechange = () => {
+                    if (installingWorker.state === "installed" && navigator.serviceWorker.controller) {
+                      console.log("[PWA] Nova versão disponível para cache offline.");
+                    }
+                  };
+                }
+              };
+            })
+            .catch((err) => {
+              console.warn("[PWA] Falha ao registrar Service Worker:", err);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

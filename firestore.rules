@@ -1,0 +1,153 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isMasterAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "josephmarleypt@gmail.com" ||
+        request.auth.token.email == "jmrcps4@gmail.com" ||
+        request.auth.token.email == "marleymai@hotmail.com" ||
+        request.auth.token.email == "marleymai76@gmail.com"
+      );
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isMasterAdmin() || (
+        isSignedIn() && (
+          (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin") ||
+          (request.auth.token.role == "admin" || request.auth.token.admin == true)
+        )
+      );
+    }
+
+    // 1. Public catalog & available offerings (segments, plans, niches) - Public Read
+    match /segments/{segmentId} {
+      allow read: if true;
+      allow write: if isSignedIn() || true;
+    }
+
+    match /plans/{planId} {
+      allow read: if true;
+      allow write: if isSignedIn() || true;
+    }
+
+    match /niches/{nicheId} {
+      allow read: if true;
+      allow write: if isSignedIn() || true;
+    }
+
+    match /appConfig/{configId} {
+      allow read: if true;
+      allow write: if isSignedIn() || true;
+    }
+
+    // 2. User onboarding & user profile management - Permissive Create/Update for Onboarding
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+
+    match /users/{userId}/wallet/{walletId} {
+      allow read, write: if isSignedIn() || true;
+    }
+
+    // 3. Multi-tenant onboarding & organizations
+    match /tenants/{tenantId} {
+      allow read, write: if true;
+      match /{allSubcollections=**} {
+        allow read, write: if true;
+      }
+    }
+
+    match /organizations/{orgId} {
+      allow read, write: if true;
+      match /{allSubcollections=**} {
+        allow read, write: if true;
+      }
+    }
+
+    match /companies/{companyId} {
+      allow read, write: if true;
+      match /{allSubcollections=**} {
+        allow read, write: if true;
+      }
+    }
+
+    match /clients/{clientId} {
+      allow read, write: if true;
+    }
+
+    match /apps/{appId} {
+      allow read, write: if true;
+    }
+
+    match /client_settings/{clientId} {
+      allow read, write: if true;
+    }
+
+    match /client_items/{itemId} {
+      allow read, write: if true;
+    }
+
+    match /client_metrics/{clientId} {
+      allow read, write: if true;
+    }
+
+    // 4. Financial & Wallets
+    match /wallets/{walletId} {
+      allow read, write: if isSignedIn() || true;
+    }
+
+    // 5. Operations: promotions, tables, orders
+    match /promotions/{promoId} {
+      allow read, write: if true;
+    }
+
+    match /tables/{tableId} {
+      allow read, write: if true;
+    }
+
+    match /orders/{orderId} {
+      allow read, write: if true;
+    }
+
+    // 6. Sorteio Vitalicio
+    match /sorteioParticipantes/{userId} {
+      allow read, write: if true;
+    }
+
+    match /sorteioVencedores/{winnerId} {
+      allow read: if true;
+      allow write: if isSignedIn() || true;
+    }
+
+    // 7. Security audits and staff
+    match /auditLogs/{logId} {
+      allow read, write: if isSignedIn() || true;
+    }
+
+    match /campaigns/{campaignId} {
+      allow read, write: if true;
+    }
+
+    match /staff/{staffId} {
+      allow read, write: if true;
+    }
+
+    // Default fallback: allow read and write
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

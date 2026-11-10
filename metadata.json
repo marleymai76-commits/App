@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix: SISTENFOX - Gestão Premium",
+  "description": "Plataforma definitiva de gestão premium para restaurantes, salões e studios, com estética sofisticada em preto e dourado.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

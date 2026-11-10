@@ -1,0 +1,264 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "User account schema including roles and metadata",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Unique Firebase Authentication UID of the user"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "manager", "waiter", "kitchen", "cashier", "client"],
+          "description": "User authorization role"
+        },
+        "isSuperUser": {
+          "type": "boolean",
+          "description": "Whether this user is a super user"
+        },
+        "lastPasswordChange": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last password change"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["uid", "name", "email", "role", "createdAt"]
+    },
+    "promotion": {
+      "title": "Promotion",
+      "description": "Promotional offers and campaigns",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["percentage", "fixed", "combo", "happy_hour"]
+        },
+        "value": {
+          "type": "number"
+        },
+        "categories": {
+          "type": "array"
+        },
+        "items": {
+          "type": "array"
+        },
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "daysOfWeek": {
+          "type": "array"
+        },
+        "startTime": {
+          "type": "string"
+        },
+        "endTime": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name", "type", "value", "startDate", "endDate", "active", "userId"]
+    },
+    "table": {
+      "title": "Table",
+      "description": "Restaurant tables status and location",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "number": {
+          "type": "number"
+        },
+        "seats": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["available", "occupied", "reserved", "payment_pending"]
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "number", "seats", "status"]
+    },
+    "order": {
+      "title": "Order",
+      "description": "Customer order details",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "tableId": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array"
+        },
+        "total": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "preparing", "ready", "delivered", "paid"]
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "tableId", "items", "total", "status", "createdAt"]
+    },
+    "auditLog": {
+      "title": "AuditLog",
+      "description": "Security and activity audit logs",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "number"
+        },
+        "metadata": {
+          "type": "object"
+        }
+      },
+      "required": ["uid", "action", "timestamp"]
+    },
+    "campaign": {
+      "title": "Campaign",
+      "description": "SaaS upgrade and coupon discount campaigns",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["upgrade", "coupon", "seasonal", "behavior"]
+        },
+        "targetPlan": {
+          "type": "string"
+        },
+        "discount": {
+          "type": "number"
+        },
+        "expiresAt": {
+          "type": "number"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "required": ["type", "targetPlan", "discount", "expiresAt", "active"]
+    },
+    "wallet": {
+      "title": "Wallet",
+      "description": "User credits wallet details",
+      "type": "object",
+      "properties": {
+        "balance": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "number"
+        }
+      },
+      "required": ["balance", "currency", "updatedAt"]
+    },
+    "staff": {
+      "title": "Staff",
+      "description": "Staff and employee profile details",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "permissions": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["email", "role", "permissions"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "User profiles and permissions collection"
+    },
+    "/promotions/{promoId}": {
+      "schema": "promotion",
+      "description": "Active promotional offers collection"
+    },
+    "/tables/{tableId}": {
+      "schema": "table",
+      "description": "Restaurant table grid status collection"
+    },
+    "/orders/{orderId}": {
+      "schema": "order",
+      "description": "Customer orders transaction history collection"
+    },
+    "/auditLogs/{logId}": {
+      "schema": "auditLog",
+      "description": "System security and transaction logs collection"
+    },
+    "/campaigns/{campaignId}": {
+      "schema": "campaign",
+      "description": "SaaS promotion and discount campaigns"
+    },
+    "/wallets/{walletId}": {
+      "schema": "wallet",
+      "description": "User wallets for credits and balances"
+    },
+    "/staff/{staffId}": {
+      "schema": "staff",
+      "description": "Staff and employees directory"
+    }
+  }
+}
